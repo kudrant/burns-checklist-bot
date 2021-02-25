@@ -1,0 +1,25 @@
+1. Вам грустно или вы в плохом настроении@1. Сиз хафақон ёки нохуш кайфиятдасиз@1. Siz xafaqon yoki noxush kayfiyatdasiz @1. Feeling sad or down in the dumps
+2. Чувствуете грусть, удручены@2. Ғам-андуҳ, надоматдасиз@2. G‘am-anduh, nadomatdasiz @2. Feeling unhappy or blue
+3. Чувствуете желание расплакаться, слезливость@3. Кўнглингиз тўлиб, йиғлагингиз келаверади @3. Ko‘nglingiz to‘lib, yig‘lagingiz kelaveradi @3. Crying spells or tearfulness
+4. Чувствуете уныние@4. Маъюслик туйғуси кўнглингизни қоплаган@4. Ma’yuslik tuyg‘usi ko‘nglingizni qoplagan @4. Feeling discouraged
+5. Испытываете чувство безнадежности@5. Ўзингизни ночордек ҳис қиласиз@5. O‘zingizni nochordek his qilasiz @5. Feeling hopeless
+6. Имеете низкую самооценку@6. Ўзингиз тўғрингизда юқори фикрда эмассиз @6. O‘zingiz to‘g‘ringizda yuqori fikrda emassiz @6. Low self-esteem
+7. Испытываете чувство собственной ничтожности и непригодности@7. Ўзингизни ҳақири-нотавондай ҳис қиласиз@7. O‘zingizni haqiri-notavonday his qilasiz @7. Feeling worthless or inadequate
+8. Испытываете чувство вины или стыда@8. Сизни айб ва уят ҳисси тарк этмайди @8. Sizni ayb va uyat hissi tark etmaydi@8. Guilt or shame
+9. Критикуете или обвиняете самого себя@9. Ўзингизга айб қўйиб, танқид остига оласиз@9. O‘zingizga ayb qo‘yib, tanqid ostiga olasiz @9. Criticizing yourself or blaming yourself
+10. Испытываете трудности с принятием решений@10. Қарор қабул қилишга қийналасиз @10. Qaror qabul qilishga qiynalasiz @10. Difficulty making decisions
+11. Чувствуете потерю интереса к членам семьи, друзьям, коллегам@11. Оила аъзоларингиз, дўстларингиз, ҳамкасабларингизга нисбатан қизиқиш йўқолганини сезяпсиз@11. Oila a’zolaringiz, do‘stlaringiz, hamkasablaringizga nisbatan qiziqish yo‘qolganini sezyapsiz @11. Loss of interest in family, friends, or colleagues
+12. Испытываете одиночество@12. Ёлғизлик туйғуси сизни тарк этмайди@12. Yolg‘izlik tuyg‘usi sizni tark etmaydi @12. Loneliness
+13. Проводите меньше времени с семьёй или с друзьями@13. Оилангиз ёки дўстларингиз билан камроқ вақт ўтказмоқдасиз@13. Oilangiz yoki do‘stlaringiz bilan kamroq vaqt o‘tkazmoqdasiz @13. Spending less time with family or friends
+14. Чувствуете потерю мотивации@14. Яшашдан мақсад ҳисси йўқолгандек@14. Yashashdan maqsad hissi yo‘qolgandek @14. Loss of motivation
+15. Чувствуете потерю интереса к работе или другим занятиям@15. Меҳнатга ёки бўлак юмушларга қизиқиш туйғуси йўқолгандай @15. Mehnatga yoki bo‘lak yumushlarga qiziqish tuyg‘usi yo‘qolganday @15. Loss of interest in work or other activities
+16. Избегаете работы и другой деятельности@16. Меҳнатдан ва бўлак фаолиятдан бўйин товлаяпсиз@16. Mehnatdan va bo‘lak faoliyatdan bo‘yin tovlayapsiz @16. Avoiding work or other activities
+17. Ощущаете потерю удовольствия и нехватку удовлетворения от жизни@17. Ҳаётдан завқланиш ва етарлича қониқиш туйғуси йўқолгандай@17. Hayotdan zavqlanish va yetarlicha qoniqish tuyg‘usi yo‘qolganday @17. Loss of pleasure or satisfaction in life
+18. Чувствуете усталость@18. Толиққандайсиз@18. Toliqqandaysiz @18. Feeling tired
+19. Испытываете затруднения со сном или, наоборот, слишком много спите@19. Уйқу келмайди ёки ҳаддан зиёд кўп ухлаяпсиз@19. Uyqu kelmaydi yoki haddan ziyod ko‘p uxlayapsiz @19. Difficulty sleeping or sleeping too much
+20. Имеете сниженный или, наоборот, повышенный аппетит@20. Иштаҳангиз йўқ ёки, аксинча, иштаҳангиз ҳаддан зиёд карнай@20. Ishtahangiz yo‘q yoki, aksincha, ishtahangiz haddan ziyod karnay @20. Decreased or increased appetite
+21. Замечаете потерю интереса к сексу@21. Жинсий алоқага қизиқишингиз йўқолганини сезяпсиз@21. Jinsiy aloqaga qiziqishingiz yo‘qolganini sezyapsiz @21. Loss of interest in sex
+22. Беспокоитесь по поводу своего здоровья@22. Соғлиғингиз сизни ташвишга солади@22. Sog‘lig‘ingiz sizni tashvishga soladi @22. Worrying about your health
+23. Имеются ли у вас суицидальные мысли?@23. Ўзингизга суиқасд қилиш хаёли бўлганми?@23. O‘zingizga suiqasd qilish xayoli bo‘lganmi?@23. Do you have any suicidal thoughts?
+24. Хотели бы вы окончить свою жизнь?@24. Яшашдан воз кечишни хоҳлармидингиз?@24. Yashashdan voz kechishni xohlarmidingiz?@24. Do you want to end your life?
+25. Планируете ли вы навредить себе?@25. Ўзингизга шикаст етказишни режалаштирганмисиз? @25. O‘zingizga shikast yetkazishni rejalashtirganmisiz?@25. Do you have a plan for harming yourself?
