@@ -12,8 +12,7 @@ public class Helper {
     static Map<Operation, List<List<KeyboardRow>>> keyboards = new HashMap<>();
     static Map<Integer, List<String>> testQuestions = new HashMap<>();
 
-
-
+    private Helper() {}
 
     static void initDialogues() {
         dialogues.clear();
@@ -88,7 +87,7 @@ public class Helper {
     }
 
     static void addChatIfAbsent(Chat chat) {
-        if (!chatMap.containsKey(chat.getId())) {
+        if (!isChatExist(chat.getId())) {
             chatMap.put(chat.getId(), chat);
         }
     }

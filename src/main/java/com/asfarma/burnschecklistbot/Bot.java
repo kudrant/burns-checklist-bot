@@ -1,17 +1,19 @@
 package com.asfarma.burnschecklistbot;
 
-import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ForceReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 
 import java.io.BufferedReader;
@@ -27,41 +29,43 @@ import static com.asfarma.burnschecklistbot.Operation.*;
 
 /**
  *
- *
  */
-public class Bot extends TelegramLongPollingBot
-{
-    private static final Logger LOGGER = Logger.getLogger( Bot.class.getName() );
+public class Bot extends TelegramLongPollingBot {
+    private static final Logger LOGGER = Logger.getLogger(Bot.class.getName());
     private static final List<KeyboardRow> keyboard = new ArrayList<>();
 
-    public static void main( String[] args )
-    {
-        ApiContextInitializer.init();
-        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
+    public static void main(String[] args) {
         try {
+            TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(new Bot());
             Helper.initDialogues();
             Helper.initTestQuestions();
             Helper.initKeyboards();
         } catch (TelegramApiRequestException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, ">>>>> Api Request Exception: ", e.toString());
+        } catch (TelegramApiException e) {
+            LOGGER.log(Level.SEVERE, ">>>>> Telegram Api Exception: ", e.toString());
         }
     }
 
 
     @Override
     public void onUpdateReceived(Update update) {
+
+        if (update == null || update.getMessage() == null) {
+            return;
+        }
+
         Message message = update.getMessage();
         long chatId = message.getChatId();
         Chat currentChat;
-        if(!Helper.isChatExist(chatId)) {
+        if (!Helper.isChatExist(chatId)) {
             currentChat = new Chat(chatId, Language.RU, 0);
             Helper.addChatIfAbsent(currentChat);
         }
         String messageText = message.getText();
 
 
-        int messageId = message.getMessageId();
         Operation operation = getOperationFromReply(chatId, messageText);
 
         switch (operation) {
@@ -97,63 +101,31 @@ public class Bot extends TelegramLongPollingBot
                     sendMsg(chatId,
                             Helper.getChatById(chatId).getLanguage().getKeyboard(Operation.FINISH_TEST),
                             Helper.getChatById(chatId).getLanguage().getMessageText(Operation.FINISH_TEST));
-                }else {
+                } else {
                     sendMsg(chatId,
                             Helper.getChatById(chatId).getLanguage().getKeyboard(TEST_QUESTION),
                             Helper.getChatById(chatId).getLanguage().getTestQuestion(Helper.getChatById(chatId).getTestStep()));
                 }
-                    break;
+                break;
             case OPTION_ONE:
                 Helper.getChatById(chatId).increaseTestStep();
                 Helper.getChatById(chatId).increaseTestScore(1);
-                if (Helper.getChatById(chatId).testIsOver) {
-                    sendMsg(chatId,
-                            Helper.getChatById(chatId).getLanguage().getKeyboard(FINISH_TEST),
-                            Helper.getChatById(chatId).getLanguage().getMessageText(FINISH_TEST));
-                }else {
-                    sendMsg(chatId,
-                            Helper.getChatById(chatId).getLanguage().getKeyboard(TEST_QUESTION),
-                            Helper.getChatById(chatId).getLanguage().getTestQuestion(Helper.getChatById(chatId).getTestStep()));
-                }
+                sendTestMsg(chatId);
                 break;
             case OPTION_TWO:
                 Helper.getChatById(chatId).increaseTestStep();
                 Helper.getChatById(chatId).increaseTestScore(2);
-                if (Helper.getChatById(chatId).testIsOver) {
-                    sendMsg(chatId,
-                            Helper.getChatById(chatId).getLanguage().getKeyboard(FINISH_TEST),
-                            Helper.getChatById(chatId).getLanguage().getMessageText(FINISH_TEST));
-                }else {
-                    sendMsg(chatId,
-                            Helper.getChatById(chatId).getLanguage().getKeyboard(TEST_QUESTION),
-                            Helper.getChatById(chatId).getLanguage().getTestQuestion(Helper.getChatById(chatId).getTestStep()));
-                }
+                sendTestMsg(chatId);
                 break;
             case OPTION_THREE:
                 Helper.getChatById(chatId).increaseTestStep();
                 Helper.getChatById(chatId).increaseTestScore(3);
-                if (Helper.getChatById(chatId).testIsOver) {
-                    sendMsg(chatId,
-                            Helper.getChatById(chatId).getLanguage().getKeyboard(FINISH_TEST),
-                            Helper.getChatById(chatId).getLanguage().getMessageText(FINISH_TEST));
-                }else {
-                    sendMsg(chatId,
-                            Helper.getChatById(chatId).getLanguage().getKeyboard(TEST_QUESTION),
-                            Helper.getChatById(chatId).getLanguage().getTestQuestion(Helper.getChatById(chatId).getTestStep()));
-                }
+                sendTestMsg(chatId);
                 break;
             case OPTION_FOUR:
                 Helper.getChatById(chatId).increaseTestStep();
                 Helper.getChatById(chatId).increaseTestScore(4);
-                if (Helper.getChatById(chatId).testIsOver) {
-                    sendMsg(chatId,
-                            Helper.getChatById(chatId).getLanguage().getKeyboard(FINISH_TEST),
-                            Helper.getChatById(chatId).getLanguage().getMessageText(FINISH_TEST));
-                }else {
-                    sendMsg(chatId,
-                            Helper.getChatById(chatId).getLanguage().getKeyboard(TEST_QUESTION),
-                            Helper.getChatById(chatId).getLanguage().getTestQuestion(Helper.getChatById(chatId).getTestStep()));
-                }
+                sendTestMsg(chatId);
                 break;
 
             case TEST_FINISHED:
@@ -164,14 +136,26 @@ public class Bot extends TelegramLongPollingBot
                                 Helper.getChatById(chatId).getLanguage().getMessageText(getDepressionLevel(chatId)));
                 break;
             case RESULTS_SHOWED: //Drugs prescribing
-                Operation prescribingOperation = PRESCRIBING_NO_DEPRESSION;
+                Operation prescribingOperation;
                 switch (getDepressionLevel(chatId)) {
-                    case NO_DEPRESSION: prescribingOperation = PRESCRIBING_NO_DEPRESSION; break;
-                    case UNHAPPY: prescribingOperation = PRESCRIBING_UNHAPPY; break;
-                    case MILD_DEPRESSION: prescribingOperation = PRESCRIBING_MILD_DEPRESSION; break;
-                    case MODERATE_DEPRESSION: prescribingOperation = PRESCRIBING_MODERATE_DEPRESSION; break;
-                    case SEVERE_DEPRESSION: prescribingOperation = PRESCRIBING_SEVERE_DEPRESSION; break;
-                    case EXTREME_DEPRESSION: prescribingOperation = PRESCRIBING_EXTREME_DEPRESSION; break;
+                    case UNHAPPY:
+                        prescribingOperation = PRESCRIBING_UNHAPPY;
+                        break;
+                    case MILD_DEPRESSION:
+                        prescribingOperation = PRESCRIBING_MILD_DEPRESSION;
+                        break;
+                    case MODERATE_DEPRESSION:
+                        prescribingOperation = PRESCRIBING_MODERATE_DEPRESSION;
+                        break;
+                    case SEVERE_DEPRESSION:
+                        prescribingOperation = PRESCRIBING_SEVERE_DEPRESSION;
+                        break;
+                    case EXTREME_DEPRESSION:
+                        prescribingOperation = PRESCRIBING_EXTREME_DEPRESSION;
+                        break;
+                    default:
+                        prescribingOperation = PRESCRIBING_NO_DEPRESSION;
+
                 }
 
                 if (prescribingOperation == PRESCRIBING_NO_DEPRESSION || prescribingOperation == PRESCRIBING_UNHAPPY) {
@@ -201,17 +185,33 @@ public class Bot extends TelegramLongPollingBot
 
 
             default:
-                sendMsg(chatId, "Reply to Message " + messageText, messageId, true);
+                //Do nothing;
+                //sendMsg(chatId, "Reply to Message " + messageText, messageId, true);
                 break;
+        }
+    }
+
+    private void sendTestMsg(long chatId) {
+        if (Helper.getChatById(chatId).testIsOver) {
+            sendMsg(chatId,
+                    Helper.getChatById(chatId).getLanguage().getKeyboard(FINISH_TEST),
+                    Helper.getChatById(chatId).getLanguage().getMessageText(FINISH_TEST));
+        } else {
+            sendMsg(chatId,
+                    Helper.getChatById(chatId).getLanguage().getKeyboard(TEST_QUESTION),
+                    Helper.getChatById(chatId).getLanguage().getTestQuestion(Helper.getChatById(chatId).getTestStep()));
         }
     }
 
     public Operation getOperationFromReply(Long chatId, String messageText) {
         String operationSign = messageText.split(" ")[0];
         switch (operationSign) {
-            case "/start": return Operation.START;
-            case "/help": return Operation.HELP;
-            case "/id": return Operation.ID;
+            case "/start":
+                return Operation.START;
+            case "/help":
+                return Operation.HELP;
+            case "/id":
+                return Operation.ID;
             case "\uD83C\uDDF7\uD83C\uDDFA":
                 Helper.getChatById(chatId).setLanguage(Language.RU);
                 return Operation.LANGUAGE_SELECTED;
@@ -225,19 +225,31 @@ public class Bot extends TelegramLongPollingBot
                 Helper.getChatById(chatId).setLanguage(Language.EN);
                 return Operation.LANGUAGE_SELECTED;
 
-            case "\uD83C\uDF10": return Operation.LANGUAGE_CHANGE;
-            case "\uD83D\uDD20": return Operation.MENU;
-            case "\uD83D\uDFE2": return Operation.TEST_STARTED;
-            case "⬜️":           return Operation.OPTION_ZERO;
-            case "\uD83D\uDFE8": return Operation.OPTION_ONE;
-            case "\uD83D\uDFE7": return Operation.OPTION_TWO;
-            case "\uD83D\uDFE5": return Operation.OPTION_THREE;
-            case "\uD83D\uDFEB": return Operation.OPTION_FOUR;
-            case "\uD83D\uDD35": return Operation.TEST_FINISHED;
-            case "\uD83D\uDC8A": return RESULTS_SHOWED;
-            case "\uD83D\uDCC4": return Operation.SEND_FILES;
+            case "\uD83C\uDF10":
+                return Operation.LANGUAGE_CHANGE;
+            case "\uD83D\uDD20":
+                return Operation.MENU;
+            case "\uD83D\uDFE2":
+                return Operation.TEST_STARTED;
+            case "⬜️":
+                return Operation.OPTION_ZERO;
+            case "\uD83D\uDFE8":
+                return Operation.OPTION_ONE;
+            case "\uD83D\uDFE7":
+                return Operation.OPTION_TWO;
+            case "\uD83D\uDFE5":
+                return Operation.OPTION_THREE;
+            case "\uD83D\uDFEB":
+                return Operation.OPTION_FOUR;
+            case "\uD83D\uDD35":
+                return Operation.TEST_FINISHED;
+            case "\uD83D\uDC8A":
+                return RESULTS_SHOWED;
+            case "\uD83D\uDCC4":
+                return Operation.SEND_FILES;
 
-            default: return Operation.UNKNOWN;
+            default:
+                return Operation.UNKNOWN;
         }
     }
 
@@ -286,45 +298,54 @@ public class Bot extends TelegramLongPollingBot
         keyboard.add(keyboardRow);
     }
 
-    public synchronized void sendMsg(long chatId, List<KeyboardRow> keyboard, String messageTextToSend) {
-        SendMessage sendMessage = new SendMessage();
+    public synchronized void sendMsg(long chatIdLong, List<KeyboardRow> keyboard, String messageTextToSend) {
+        SendMessage sendMessage = SendMessage
+                .builder()
+                .chatId(Long.toString(chatIdLong))
+                .text(messageTextToSend)
+                .replyMarkup(new ForceReplyKeyboard())
+                .build();
+
         sendMessage.enableMarkdown(true);
-        sendMessage.setChatId(chatId);
-        sendMessage.setText(messageTextToSend);
+
 
         try {
             setButtons(sendMessage, keyboard);
             execute(sendMessage);
         } catch (TelegramApiException e) {
-            LOGGER.log(Level.SEVERE, "Exception: ", e.toString());
+            LOGGER.log(Level.SEVERE, ">>>>> Telegram Api Exception: ", e.toString());
         }
     }
 
-    public synchronized void sendFile(long chatId, List<KeyboardRow> keyboard, String messageTextToSend, File file) {
-        SendDocument sendDocument = new SendDocument();
-        sendDocument.setChatId(chatId);
-        sendDocument.setDocument(file);
-        sendDocument.setCaption(messageTextToSend);
+    public synchronized void sendFile(long chatIdLong, List<KeyboardRow> keyboard, String messageTextToSend, File file) {
+        SendDocument sendDocument = SendDocument
+                .builder()
+                .chatId(Long.toString(chatIdLong))
+                .document(new InputFile(file))
+                .caption(messageTextToSend)
+                .build();
+
         try {
             setButtons(sendDocument, keyboard);
             execute(sendDocument);
         } catch (TelegramApiException e) {
-            LOGGER.log(Level.SEVERE, "Exception: ", e.toString());
+            LOGGER.log(Level.SEVERE, ">>>>> Telegram Api Exception: ", e.toString());
         }
     }
 
-    public synchronized void sendMsg(long chatId, String messageTextToSend, int messageId, boolean isReply) {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.enableMarkdown(true);
-        sendMessage.setChatId(chatId);
-        sendMessage.setText(messageTextToSend);
+    public synchronized void sendMsg(long chatIdLong, String messageTextToSend, int messageId, boolean isReply) {
+        SendMessage sendMessage = SendMessage
+                .builder()
+                .chatId(Long.toString(chatIdLong))
+                .text(messageTextToSend)
+                .build();
         if (isReply)
             sendMessage.setReplyToMessageId(messageId);
         try {
             setButtons(sendMessage, keyboard);
             execute(sendMessage);
         } catch (TelegramApiException e) {
-            LOGGER.log(Level.SEVERE, "Exception: ", e.toString());
+            LOGGER.log(Level.SEVERE, ">>>>> Telegram Api Exception: ", e.toString());
         }
     }
 
@@ -348,7 +369,7 @@ public class Bot extends TelegramLongPollingBot
             return fileLines.get(lineIndex);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, ">>>>> IO Exception: ", e.toString());
         }
         return "";
     }
